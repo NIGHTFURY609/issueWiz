@@ -1,5 +1,6 @@
 # test_run.py
 from model.matcher import IssueMatcher
+import time
 import asyncio
 import json
 
@@ -111,9 +112,12 @@ async def main():
     # Initialize the matcher
     matcher = IssueMatcher()
     
+    start_time=time.time()
     # Run the matching
     result = await matcher.match_files(issue_data, filtered_files)
-   
+    end_time=time.time()
+    elapsed_time=end_time-start_time
+    print("Time taken :",elapsed_time)
     print(json.dumps(result,indent=4))
     
 
