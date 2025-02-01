@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-#from app.routers import issues
+from app.routers import models
 app = FastAPI(
     title="IssueWiz",
     description="An AI-powered assistant for decoding open-source issues",
@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(issues.router, prefix="/models", tags=["model"])
+app.include_router(models.router, prefix="/models", tags=["models"])
 
 @app.get("/")
 def read_root():

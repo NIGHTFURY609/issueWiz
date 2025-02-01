@@ -1,4 +1,3 @@
-
 # embeddings.py
 from sentence_transformers import SentenceTransformer
 import numpy as np
@@ -10,4 +9,3 @@ class EmbeddingGenerator:
     
     def generate_embedding(self, text):
         return self.model.encode(text, convert_to_tensor=True)
-        

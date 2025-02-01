@@ -1,4 +1,5 @@
 
+
 # config.py
 CONFIG = {
     'CACHE_TTL': 3600,
