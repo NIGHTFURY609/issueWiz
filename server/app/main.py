@@ -20,7 +20,8 @@ app.add_middleware(
 )
 
 # Include routers
-#app.include_router(issues.router, prefix="/api/issues", tags=["Issues"])
+app.include_router(issues.router, prefix="/models", tags=["model"])
+
 @app.get("/")
 def read_root():
     return {"message": "Welcome to IssueWiz API!"}

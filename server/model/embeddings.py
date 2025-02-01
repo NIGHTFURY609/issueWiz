@@ -10,3 +10,4 @@ class EmbeddingGenerator:
     
     def generate_embedding(self, text):
         return self.model.encode(text, convert_to_tensor=True)
+        
