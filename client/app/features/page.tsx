@@ -9,7 +9,8 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "../components/ui/card";
+} from "./../components/ui/card";
+
 
 const Features = () => {
   const router = useRouter();
