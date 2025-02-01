@@ -41,7 +41,7 @@ export default function Home() {
         <div className="w-full max-w-xl space-y-6">
           <div className="flex items-center justify-center md:justify-start space-x-4">
             <Zap className="text-cyan-400 animate-pulse" size={24} />
-            <span className="text-xs uppercase tracking-wider text-cyan-300">
+            <span className="font-josefinSans text-xs uppercase tracking-wider text-cyan-300">
               AI-Powered Collaboration
             </span>
           </div>
@@ -59,15 +59,15 @@ export default function Home() {
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-extrabold text-center md:text-left text-white/90">
+          <h1 className="font-noto text-4xl md:text-5xl font-extrabold text-center md:text-left text-white/90">
             ISSUEWIZ
           </h1>
 
-          <h2 className="text-2xl md:text-4xl font-extrabold text-center md:text-left bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-500 animate-gradient-x">
-            Revolutionize Open Source Contributions
+          <h2 className="font-noto text-2xl md:text-4xl font-extrabold text-center md:text-left bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-500 animate-gradient-x">
+            REVOLUNITIZING OPEN-SOURCE CONTRIBUTIONS
           </h2>
 
-          <p className="text-base  md:text-xl text-white/70 max-w-md mx-auto md:mx-0 text-center md:text-left leading-relaxed">
+          <p className="font-josefinSans text-base  md:text-xl text-white/70 max-w-md mx-auto md:mx-0 text-center md:text-left leading-relaxed">
             Leverage cutting-edge AI to streamline your open-source workflow, 
             providing intelligent insights and seamless project collaboration.
           </p>
@@ -75,7 +75,7 @@ export default function Home() {
           <div className="flex justify-center md:justify-start space-x-4">
             <button 
               onClick={handleGetStarted}
-              className="bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-3 md:px-8 md:py-4 rounded-xl 
+              className="font-josefinSans bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-3 md:px-8 md:py-4 rounded-xl 
               flex items-center space-x-2 
               hover:scale-105 transition-transform duration-300 
               shadow-xl hover:shadow-cyan-500/50 
