@@ -50,11 +50,11 @@ const Features = () => {
         <div className="text-center mb-16 space-y-4">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <Sparkles className="text-cyan-400 animate-pulse" size={24} />
-            <span className="text-sm uppercase tracking-wider text-cyan-300">
+            <span className="font-josefinSans text-sm uppercase tracking-wider text-cyan-300">
               Powerful Features
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white">
+          <h1 className="font-noto text-4xl md:text-5xl font-extrabold text-white">
             EXPLORE ISSUEWIZ FEATURES
           </h1>
         </div>
@@ -68,19 +68,16 @@ const Features = () => {
     <div className="h-12 w-12 rounded-lg bg-cyan-500/20 flex items-center justify-center mb-4">
       <BookOpen className="text-cyan-400" size={24} />
     </div>
-    <CardTitle className="text-xl text-white/90">Issue-Specific Guidance</CardTitle>
-    <CardDescription className="text-white/70">
-      Get actionable insights and interactive documentation for any GitHub issue.
-    </CardDescription>
+    <CardTitle className="font-noto text-xl text-white/90">Issue-Specific Guidance</CardTitle>
   </CardHeader>
-  <CardContent className="text-white/60">
+  <CardContent className="font-josefinSans text-white/60">
     Paste a GitHub issue link to analyze files, identify potential fixes, and gain AI-powered explanations.  
     Highlights critical files, suggests modifications, and guide users.
   </CardContent>
   <CardFooter>
     <button
-      onClick={handleFirst}
-      className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-3 rounded-xl
+      // onClick={handleFirst}
+      className="font-josefinSans w-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-3 rounded-xl
       flex items-center justify-center space-x-2
       hover:scale-105 transition-transform duration-300
       shadow-xl hover:shadow-cyan-500/50
@@ -100,19 +97,16 @@ const Features = () => {
     <div className="h-12 w-12 rounded-lg bg-cyan-500/20 flex items-center justify-center mb-4">
       <Users className="text-cyan-400" size={24} />
     </div>
-    <CardTitle className="text-xl text-white/90">Skill-Based Issue Recommendations</CardTitle>
-    <CardDescription className="text-white/70">
-      Get AI-generated issue recommendations based on your GitHub activity and tech stack.
-    </CardDescription>
+    <CardTitle className="font-noto text-xl text-white/90">Skill-Based Issue Recommendations</CardTitle>
   </CardHeader>
-  <CardContent className="text-white/60">
+  <CardContent className="font-josefinSans text-white/60">
     Designed for beginners or contributors unsure where to start, input your GitHub username and preferred repository. 
     The AI recommends issues based on your skills .
   </CardContent>
   <CardFooter>
     <button
       onClick={handleSecond}
-      className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-3 rounded-xl
+      className="font-josefinSans w-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-3 rounded-xl
       flex items-center justify-center space-x-2
       hover:scale-105 transition-transform duration-300
       shadow-xl hover:shadow-cyan-500/50
