@@ -72,8 +72,8 @@ export default function ChatBot({
         <div className="flex items-center space-x-3">
           <GitBranch className="text-cyan-400" size={24} />
           <div>
-            <h2 className="text-xl font-semibold text-white">Open Source Guide</h2>
-            <p className="text-sm text-cyan-300">I'm here to help you start your open source journey!</p>
+            <h2 className="font-noto text-xl font-semibold text-white">Open Source Guide</h2>
+            <p className="font-noto text-sm text-cyan-300">I'm here to help you start your open source journey!</p>
           </div>
         </div>
       </div>
