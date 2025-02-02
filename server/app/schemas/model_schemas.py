@@ -1,5 +1,5 @@
 from pydantic import BaseModel, HttpUrl
-from typing import List
+from typing import List, Optional
 
 
 class FileInfo(BaseModel):
@@ -12,16 +12,10 @@ class IssueDetails(BaseModel):
     repo: str
     title: str
     description: str
-    labels: List[str]
+    labels: Optional[List[str]]
 
-class IssueAnalysisRequest(BaseModel):
+class AnalyzeIssueRequest(BaseModel):
     owner: str
     repo: str
     filteredFiles: List[FileInfo]
     issueDetails: IssueDetails
-
-class IssueAnalysisResponse(BaseModel):
-    elapsed_time: float
-    matches: dict
-    status: str
-    message: str
