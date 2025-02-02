@@ -42,32 +42,48 @@ For Hardware:
 
 ### Implementation
 For Software:
-#### Installation
+### Implementation  
+
+#### Backend (server)  
+##### Installation  
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/issuewiz.git
-cd issuewiz
+cd issuewiz/server
 
 # Install dependencies
 pip install -r requirements.txt
-npm install
 
 # Set up environment variables (GitHub API, OpenAI API, etc.)
 # Create a `.env` file and add necessary keys
 
 # Start the backend server
-uvicorn backend.main:app --reload
+uvicorn main:app --reload
+```  
+
+##### Run  
+```bash
+uvicorn main:app --reload
+```  
+
+#### Frontend (client)  
+##### Installation  
+```bash
+# Navigate to the frontend directory
+cd ../client
+
+# Install dependencies
+npm install
+
+# Set up environment variables if required
+# Create a `.env` file and add necessary keys
 
 # Start the frontend server
 npm run dev
-```
+```  
 
-#### Run
+##### Run  
 ```bash
-# Backend
-uvicorn backend.main:app --reload
-
-# Frontend
 npm run dev
 ```
 ### Project Documentation
