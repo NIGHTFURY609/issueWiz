@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { MessageSquare, GitBranch, Code2, Search, FileText, Workflow, Github } from 'lucide-react';
 import fetchDetails from '../utils/issuerep_det';
 import ReactMarkdown from 'react-markdown';
-import { useRouter } from 'next/navigation';
 
 interface ChatMessage {
   type: 'bot' | 'user';
@@ -15,16 +14,7 @@ interface FileContent {
   content: string;
 }
 
-interface FileMatch {
-  file_name: string;
-  match_score: number;
-  download_url: string;
-}
-
 const RepositoryAnalyzer = () => {
-  const router = useRouter();
-
-
   const [repoUrl, setRepoUrl] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [showChatBot, setShowChatBot] = useState(false);
@@ -73,31 +63,39 @@ const RepositoryAnalyzer = () => {
     );
   };
 
-  const formatAnalysisContent = (analysis: any, topMatches: FileMatch[]) => {
-    // Format the match score as a percentage with 1 decimal place
-    const formatScore = (score: number) => (score * 100).toFixed(1);
-    
+  const formatAnalysisContent = (analysis: any) => {
     return `
 # 📊 Repository Analysis Summary ${getEmoji('positive')}
 
-## 🎯 Top Matching Files
-${topMatches.map((file, index) => 
-  `${index + 1}. \`${file.file_name}\` (Match Score: ${formatScore(file.match_score)}%)\n`
-).join('')}
+## 🎯 Purpose
+${analysis.repository_analysis.purpose}
 
 ## 🛠️ Tech Stack
 ${analysis.repository_analysis.tech_stack.join(', ')}
 
-## 📝 Analysis Details
-${analysis.repository_analysis.purpose}
+## 📁 Relevant Files Analysis
+${analysis.file_analysis.analyzed_files.map((file: any) => 
+  `### ${file.file_name} (${file.combined_probability}% match)
+  ${file.reason}`
+).join('\n\n')}
 
-## 🔍 Recommendations
+## 🎯 Recommendations
+
+### Priority Order:
+${analysis.recommendations.priority_order.map((file: string, index: number) => 
+  `${index + 1}. ${file}`
+).join('\n')}
+
+### 🔧 Specific Changes Needed:
 ${analysis.recommendations.specific_changes}
 
+### 📚 Additional Context:
+${analysis.recommendations.additional_context}
+
 💬 Feel free to ask me about:
-- Code explanations for these files
-- Understanding the match scores
-- Detailed analysis of specific files
+- Code explanations for any file
+- Detailed workflow for solving this issue
+- Understanding specific parts of the code
 - Best practices and recommendations`;
   };
 
@@ -108,26 +106,20 @@ ${analysis.recommendations.specific_changes}
     try {
       const data = await fetchDetails(repoUrl);
       
-      if (data && data.matches) {
+      if (data && data.matchedFiles) {
         const urlParts = repoUrl.split('/');
         const owner = urlParts[3];
         const repo = urlParts[4];
         const issueNumber = urlParts[6];
 
-        // Extract and sort file matches by score
-        const fileMatches = data.matches.filename_matches || [];
-        const topThreeMatches = fileMatches
-          .sort((a: FileMatch, b: FileMatch) => b.match_score - a.match_score)
-          .slice(0, 3);
-
         const issueResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/issues/${issueNumber}`);
         const issueData = await issueResponse.json();
 
+        const { filename_matches = [], content_matches = [] } = data.matchedFiles;
+
         const aiRequestBody = {
-          matchedFiles: {
-            ...data,
-            filename_matches: topThreeMatches // Only send top 3 matches for analysis
-          },
+          content_matches,
+          filename_matches,
           owner,
           repo,
           issue_url: repoUrl,
@@ -148,8 +140,9 @@ ${analysis.recommendations.specific_changes}
         const aiResult = await aiResponse.json();
         setAnalysisContext(aiResult.reply);
         
-        // Fetch contents only for top 3 matching files
-        const fileContentsPromises = topThreeMatches.map(async (file: FileMatch) => {
+        // Fetch contents of relevant files
+        const relevantFiles = aiResult.reply.file_analysis.analyzed_files;
+        const fileContentsPromises = relevantFiles.map(async (file: any) => {
           try {
             const content = await fetchFileContent(owner, repo, file.file_name);
             return { name: file.file_name, content };
@@ -162,12 +155,12 @@ ${analysis.recommendations.specific_changes}
         const contents = await Promise.all(fileContentsPromises);
         setFileContents(contents);
 
-        const formattedAnalysis = formatAnalysisContent(aiResult.reply, topThreeMatches);
+        const formattedAnalysis = formatAnalysisContent(aiResult.reply);
         
         setMessages([
           { 
             type: 'bot', 
-            content: `# 👋 Hello! I've analyzed your repository and found the most relevant files! ${getEmoji('positive')}` 
+            content: `# 👋 Hello! Let's solve this together! ${getEmoji('positive')}` 
           },
           { 
             type: 'bot', 
