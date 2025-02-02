@@ -1,37 +1,25 @@
 from fastapi import APIRouter, HTTPException
-from app.schemas.model_schemas import IssueAnalysisRequest, IssueAnalysisResponse
-from typing import List, Optional
+from app.schemas.model_schemas import AnalyzeIssueRequest
+from typing import List, Dict, Any
 from model.matcher import IssueMatcher
-import time
-import json
 
 router = APIRouter()
 
-
-@router.post("/analyse-issue", response_model=IssueAnalysisResponse)
-async def analyze_issue(request: IssueAnalysisRequest):
+@router.post("/analyse-issue")
+async def analyze_issue(request: AnalyzeIssueRequest) -> Dict[str, Any]:
     try:
-        # Initialize the matcher
         matcher = IssueMatcher()
         
-        start_time = time.time()
+        # Extract the issue details and filtered files
+        issue_data = request.issueDetails.dict()
+        filtered_files = [file.dict() for file in request.filteredFiles]
         
         # Run the matching
-        result = await matcher.match_files(
-            request.issueDetails.dict(),
-            [file.dict() for file in request.filteredFiles]
-        )
+        result = await matcher.match_files(issue_data, filtered_files)
         
-        end_time = time.time()
-        elapsed_time = end_time - start_time
+        # Return the raw result from the matcher
+        return result
         
-        return IssueAnalysisResponse(
-            elapsed_time=elapsed_time,
-            matches=result,
-            status="success",
-            message="Issue analysis completed successfully"
-        )
-    
     except Exception as e:
         raise HTTPException(
             status_code=500,
