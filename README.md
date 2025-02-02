@@ -44,6 +44,8 @@ For Hardware:
 For Software:
 ### Implementation  
 
+### Implementation  
+
 #### Backend (server)  
 ##### Installation  
 ```bash
@@ -51,19 +53,29 @@ For Software:
 git clone https://github.com/yourusername/issuewiz.git
 cd issuewiz/server
 
+# Create a virtual environment and activate it
+python -m venv venv
+source venv/bin/activate  # On macOS/Linux
+venv\Scripts\activate     # On Windows
+
 # Install dependencies
-pip install -r requirements.txt
+pip install -r requirements-server.txt -r model/requirements-model.txt
 
 # Set up environment variables (GitHub API, OpenAI API, etc.)
 # Create a `.env` file and add necessary keys
 
 # Start the backend server
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```  
 
 ##### Run  
 ```bash
-uvicorn main:app --reload
+# Activate virtual environment
+source venv/bin/activate  # On macOS/Linux
+venv\Scripts\activate     # On Windows
+
+# Run the backend server
+uvicorn app.main:app --reload
 ```  
 
 #### Frontend (client)  
@@ -105,19 +117,6 @@ For Software:
 ![image](https://github.com/user-attachments/assets/295f3dfe-59d6-465a-9009-c6a0e8ae6907)
 *issue recommendation page*
 
-
-# Build Photos
-![Team](Add photo of your team here)
-
-
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
 
 ### Project Demo
 # Video
