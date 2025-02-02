@@ -245,7 +245,7 @@ const Beginner = () => {
 
     try {
       // Get AI response for follow-up message
-      const aiResponse = await fetch('/api/chat_followup', {
+      const aiResponse = await fetch('/api/chatone_followup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
