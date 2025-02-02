@@ -9,7 +9,8 @@ app = FastAPI(
 # CORS setup
 origins = [
     "http://localhost:3000",  # Allow local frontend
-    "https://your-deployed-client-url.com",  # Add your deployed frontend URL here
+    "http://localhost:3001",
+    "https://issue-wiz.vercel.app/",  # Add your deployed frontend URL here
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -28,3 +29,5 @@ def read_root():
 @app.get("/health", tags=["Health"])
 def health_check():
     return {"status": "Server is running!"}
+
+
