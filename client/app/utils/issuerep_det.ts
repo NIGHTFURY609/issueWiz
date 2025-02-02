@@ -1,6 +1,5 @@
 const fetchDetails = async (repoUrl: string) => {
 
- // console.log('GitHub Token:', process.env.NEXT_PUBLIC_GITHUB_TOKEN);
 
 
   if (!repoUrl.trim() || !repoUrl.startsWith("https://github.com/")) {
@@ -89,7 +88,7 @@ const fetchDetails = async (repoUrl: string) => {
     console.log(res);
 
     try {
-      const postResponse = await fetch('https://issuewiz-4w97.onrender.com/models/analyse-issue', {
+      const postResponse = await fetch('https://issuewiz-s72j.onrender.com//models/api/analyse-issue', {
         method: 'POST',
         mode: 'cors',
         headers: {
