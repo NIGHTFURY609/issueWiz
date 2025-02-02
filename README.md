@@ -18,7 +18,7 @@ IssueWiz is an AI-powered platform designed to lower the barrier to entry for op
 
 
 ### The Problem statement
-Contributing to open-source projects can be daunting, especially for beginners. The complexity of understanding codebases, identifying relevant files, and navigating through sparse or overwhelming documentation creates barriers to entry .
+Contributing to open-source projects can be challenging, especially for beginners, due to complex codebases, unclear documentation, and difficulty identifying relevant files. Even experienced developers struggle with narrowing down bugs and locating error files in large repositories. Without proper guidance, both beginners and experts end up spending more time searching than solving, making contributions inefficient.
 
 ### The Solution
 IssueWiz simplifies this process by providing the following:
