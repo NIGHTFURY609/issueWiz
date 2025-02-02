@@ -1,10 +1,11 @@
-from fastapi import APIRouter, HTTPException, Request
-from pydantic import BaseModel, Field
-from typing import List, Dict, Any
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+from typing import List, Optional
 from model.matcher import IssueMatcher
+import time
 import json
 
-router = APIRouter()
+router = APIRouter(prefix="/api", tags=["issue-analysis"])
 
 class FileInfo(BaseModel):
     name: str
@@ -15,45 +16,45 @@ class IssueDetails(BaseModel):
     owner: str
     repo: str
     title: str
-    description: str = Field(..., description="Issue description with markdown formatting")
+    description: str
     labels: List[str]
 
-class AnalyzeIssueRequest(BaseModel):
+class IssueAnalysisRequest(BaseModel):
     owner: str
     repo: str
     filteredFiles: List[FileInfo]
     issueDetails: IssueDetails
 
-@router.post("/analyse-issue")
-async def analyze_issue(request: Request) -> Dict[str, Any]:
+class IssueAnalysisResponse(BaseModel):
+    elapsed_time: float
+    matches: dict
+    status: str
+    message: str
+
+@router.post("/analyse-issue", response_model=IssueAnalysisResponse)
+async def analyze_issue(request: IssueAnalysisRequest):
     try:
-        # Get raw request body first
-        raw_body = await request.body()
-        body = json.loads(raw_body.decode("utf-8"))
-        
-        # Validate with Pydantic after parsing
-        validated_request = AnalyzeIssueRequest(**body)
-        
+        # Initialize the matcher
         matcher = IssueMatcher()
+        
+        start_time = time.time()
         
         # Run the matching
         result = await matcher.match_files(
-            validated_request.issueDetails.dict(),
-            [file.dict() for file in validated_request.filteredFiles]
+            request.issueDetails.dict(),
+            [file.dict() for file in request.filteredFiles]
         )
         
-        return result
+        end_time = time.time()
+        elapsed_time = end_time - start_time
         
-    except json.JSONDecodeError as e:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid JSON format: {str(e)}"
+        return IssueAnalysisResponse(
+            elapsed_time=elapsed_time,
+            matches=result,
+            status="success",
+            message="Issue analysis completed successfully"
         )
-    except ValueError as e:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Validation error: {str(e)}"
-        )
+    
     except Exception as e:
         raise HTTPException(
             status_code=500,
