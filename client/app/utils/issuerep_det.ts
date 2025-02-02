@@ -1,6 +1,6 @@
 const fetchDetails = async (repoUrl: string) => {
 
-  console.log('GitHub Token:', process.env.NEXT_PUBLIC_GITHUB_TOKEN);
+ // console.log('GitHub Token:', process.env.NEXT_PUBLIC_GITHUB_TOKEN);
 
 
   if (!repoUrl.trim() || !repoUrl.startsWith("https://github.com/")) {
@@ -71,6 +71,8 @@ const fetchDetails = async (repoUrl: string) => {
       }
       const issueData = await issueResponse.json();
       issueDetails = {
+        owner,
+        repo,
         title: issueData.title,
         description: issueData.body,
         labels: issueData.labels.map((label: { name: string }) => label.name),
@@ -78,22 +80,37 @@ const fetchDetails = async (repoUrl: string) => {
     }
 
     const res = {
-      owner,
-      repo,
-      filteredFiles,
-      issueDetails,
+      owner: owner,
+      repo: repo,
+      filteredFiles: filteredFiles, // Make sure this array is properly terminated
+      issueDetails: issueDetails    // Last property should NOT have a trailing comma
     };
-
+    
     console.log(res);
 
     try {
-      const postResponse = await fetch('https://issuewiz.onrender.com/api/issues/match-keywords', {
+      const postResponse = await fetch('https://issuewiz-4w97.onrender.com/models/analyse-issue', {
         method: 'POST',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(res),
+        body: JSON.stringify({
+          owner,
+          repo,
+          filteredFiles: filteredFiles.map(file => ({
+            name: file.name,
+            path: file.path,
+            download_url: file.download_url
+          })),
+          issueDetails: issueDetails ? {
+            owner: issueDetails.owner,
+            repo: issueDetails.repo,
+            title: issueDetails.title,
+            description: issueDetails.description,
+            labels: issueDetails.labels
+          } : null
+        })
       });
 
       if (!postResponse.ok) {

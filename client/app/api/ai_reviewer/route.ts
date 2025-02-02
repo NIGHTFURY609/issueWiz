@@ -1,13 +1,16 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
+// Initialize OpenAI client with API key
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || '',
 });
 
+// Constants for limiting analysis scope
 const MAX_CHARS_PER_FILE = 1000; // Limit characters per file
 const MAX_FILES = 3; // Limit number of files to analyze
 
+// Helper function to fetch and truncate file content
 async function fetchFileContent(url: string) {
   try {
     const response = await fetch(url);
@@ -25,8 +28,23 @@ async function fetchFileContent(url: string) {
   }
 }
 
+// Interface defining the expected structure of the FastAPI response
+interface FastAPIResponse {
+  elapsed_time: number;
+  matches: {
+    filename_matches: Array<{
+      file_name: string;
+      match_score: number;
+      download_url: string;
+    }>;
+  };
+  status: string;
+  message: string;
+}
+
 export async function POST(request: Request) {
   try {
+    // Verify API key exists
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json(
         { error: 'OpenAI API key is not configured' },
@@ -34,17 +52,24 @@ export async function POST(request: Request) {
       );
     }
 
-    const { content_matches, filename_matches, owner, repo, issue_url, issue_title, issue_body } = await request.json();
+    // Extract request data
+    const requestData = await request.json();
+    const { owner, repo, issue_title, issue_body } = requestData;
 
-    if (!Array.isArray(content_matches) || !Array.isArray(filename_matches)) {
+    // Extract filename matches from the nested structure
+    // Note: We're now expecting the matches to be in the format returned by FastAPI
+    const filename_matches = requestData.matchedFiles?.matches?.filename_matches;
+
+    // Validate the matches array
+    if (!Array.isArray(filename_matches)) {
       return NextResponse.json(
-        { error: 'Invalid input: content_matches or filename_matches is not an array' },
+        { error: 'Invalid input: filename_matches is not available or not an array' },
         { status: 400 }
       );
     }
 
     // Sort and limit the number of files to analyze
-    const topMatches = [...content_matches, ...filename_matches]
+    const topMatches = filename_matches
       .sort((a, b) => b.match_score - a.match_score)
       .slice(0, MAX_FILES);
 
@@ -57,15 +82,19 @@ export async function POST(request: Request) {
       }))
     );
 
+    // Filter out any null contents from failed fetches
+    const validFileContents = fileContents.filter(file => file.content !== null);
+
+    // Construct the analysis prompt
     const prompt = `
 Analyze this GitHub issue and relevant files:
 
 Repository: ${owner}/${repo}
 Issue Title: ${issue_title}
-Issue Description: ${issue_body.slice(0, 500)}${issue_body.length > 500 ? '... (truncated)' : ''}
+Issue Description: ${issue_body?.slice(0, 500)}${issue_body?.length > 500 ? '... (truncated)' : ''}
 
 Relevant Files:
-${fileContents.map(file => `
+${validFileContents.map(file => `
 File: ${file.file_name}
 Match Score: ${file.match_score}
 Key Content:
@@ -78,6 +107,7 @@ Provide analysis focusing on:
 3. Specific recommendations for changes
 `;
 
+    // Make OpenAI API call
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo-16k", // Using 16k context model for larger content
       messages: [
@@ -115,6 +145,7 @@ Provide analysis focusing on:
       max_tokens: 2000
     });
 
+    // Extract and process the analysis content
     const analysisContent = completion.choices[0]?.message?.content;
 
     if (!analysisContent) {
@@ -124,6 +155,7 @@ Provide analysis focusing on:
       );
     }
 
+    // Clean up the response and parse JSON
     const sanitizedContent = analysisContent.replace(/```.*?(\n|$)/g, '').trim();
     
     try {
