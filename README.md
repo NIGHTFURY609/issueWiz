@@ -95,4 +95,4 @@ For Software:
 ## Team Contributions
 - **Mehrin**: Developed the backend with FastAPI and integrated Supabase for user data and authentication.
 - **Diya**: Worked on the frontend development using Next.js, integrating the GitHub API for issue tracking, and AI-powered documentation.
-- **Aswathy**: Trained the NLP model for issue-specific suggestions.
+- **Aswathy**: Implemented SentenceTransformer - deeplearning model for issue mapping and code analysis .
