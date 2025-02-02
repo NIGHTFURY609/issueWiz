@@ -105,11 +105,8 @@ For Software:
 
 ### Project Demo
 # Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
+[Youtube - issueWiz - Bonito Flakes Tink-Her-Hack 3.0](https://www.youtube.com/watch?v=LsXWV6i_PTY)
 
-# Additional Demos
-[Add any extra demo materials/links]
 
 ## Team Contributions
 - **Mehrin**: Developed the backend with FastAPI and integrated Supabase for user data and authentication.
