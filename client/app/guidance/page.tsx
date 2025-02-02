@@ -221,7 +221,7 @@ ${analysis.recommendations.specific_changes}
         }
       };
 
-      const aiResponse = await fetch('/api/chat_followup', {
+      const aiResponse = await fetch('/api/chattwo_followup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(context)
