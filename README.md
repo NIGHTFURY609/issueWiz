@@ -98,7 +98,7 @@ npm run dev
 ### Project Documentation
 For Software:
 
-# Screenshots (Add at least 3)
+# Screenshots 
 ![image](https://github.com/user-attachments/assets/5cd41a5e-2a13-43f2-8a3f-f3183475561f)
 *issueWiz Landing Page*
 
