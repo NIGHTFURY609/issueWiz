@@ -76,7 +76,7 @@ const Features = () => {
   </CardContent>
   <CardFooter>
     <button
-      // onClick={handleFirst}
+     onClick={handleFirst}
       className="font-josefinSans w-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-3 rounded-xl
       flex items-center justify-center space-x-2
       hover:scale-105 transition-transform duration-300
