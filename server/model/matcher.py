@@ -1,3 +1,4 @@
+#matcher.py
 from concurrent.futures import ThreadPoolExecutor
 import asyncio
 import aiohttp
@@ -7,7 +8,7 @@ from .cache import Cache
 from .embeddings import EmbeddingGenerator
 import logging
 
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO)
 
 class IssueMatcher:
     def __init__(self):
@@ -25,7 +26,7 @@ class IssueMatcher:
                 async with session.get(file['download_url'], timeout=5) as response:
                     if response.status == 200:
                         content = await response.text()
-                        return {'path': file['path'], 'content': content}
+                        return {'path': file['path'], 'content': content, 'download_url': file['download_url']}
                     logging.error(f"Failed to download {file['path']} (HTTP {response.status})")
         except asyncio.TimeoutError:
             logging.error(f"Timeout when downloading {file['path']}")
@@ -88,7 +89,8 @@ class IssueMatcher:
                         'path': x['path'],
                         'embedding': self.embedding_generator.generate_embedding(
                             self.preprocess_content(x['content'])
-                        )
+                        ),
+                        'download_url': x['download_url']
                     },
                     file_contents
                 ))
@@ -102,15 +104,15 @@ class IssueMatcher:
                 )
                 if similarity > 0.1:  # Minimum threshold
                     matches.append({
-                        "file": file_data['path'],
-                        "similarity_score": round(similarity, 2)
+                        "file_name": file_data['path'],
+                        "match_score": round(similarity, 2),
+                        "download_url": file_data['download_url']
                     })
 
             # Sort and return results
-            matches.sort(key=lambda x: x['similarity_score'], reverse=True)
+            matches.sort(key=lambda x: x['match_score'], reverse=True)
             result = {
-                "status": "success",
-                "matches": matches[:]
+                "filename_matches": matches[:]
             }
 
             # Cache the result
@@ -120,3 +122,4 @@ class IssueMatcher:
         except Exception as e:
             logging.exception("Error in match_files")
             return {"status": "error", "message": str(e)}
+
