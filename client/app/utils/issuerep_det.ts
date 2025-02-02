@@ -88,7 +88,7 @@ const fetchDetails = async (repoUrl: string) => {
     console.log(res);
 
     try {
-      const postResponse = await fetch('https://issuewiz-s72j.onrender.com//models/api/analyse-issue', {
+      const postResponse = await fetch('https://issuewiz.onrender.com/api/issues/match-keywords', {
         method: 'POST',
         mode: 'cors',
         headers: {
