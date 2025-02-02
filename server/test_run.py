@@ -117,7 +117,9 @@ async def main():
     result = await matcher.match_files(issue_data, filtered_files)
     end_time=time.time()
     elapsed_time=end_time-start_time
-    print("Time taken :",elapsed_time)
+    formatted_result = json.dumps(result, indent=4)
+    print("Time taken :", elapsed_time)
+    print(formatted_result)
     print(json.dumps(result,indent=4))
     
 

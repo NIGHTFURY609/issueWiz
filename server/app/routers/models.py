@@ -1,27 +1,36 @@
 from fastapi import APIRouter, HTTPException
-from typing import List
-from app.schemas.model_schemas import KeywordMatchRequest, KeywordMatchResponse
+from pydantic import BaseModel
+from typing import List,Dict
 from model.matcher import IssueMatcher
+import json
+from app.schemas.model_schemas import KeywordMatchRequest, KeywordMatchResponse
 
 router = APIRouter()
 
-@router.post("/analyse-issue", response_model=KeywordMatchResponse)
-async def process_request(request: KeywordMatchRequest):
-    # Add machine learning code here to process the request and generate a response
-    # For now, returning a basic response or raising an HTTPException
+@router.post("/analyze_issue", response_model=KeywordMatchResponse)
+async def analyze_issue(request: KeywordMatchRequest):
+    matcher = IssueMatcher()
     try:
+        # Extract issue data
         issue_data = {
-            "owner": request.owner,
-            "repo": request.repo,
-            "title": request.title,
-            "description": request.description,
-            "labels": request.labels
+            "owner": request.issueDetails.owner,
+            "repo": request.issueDetails.repo,
+            "title": request.issueDetails.title,
+            "description": request.issueDetails.description,
+            "labels": request.issueDetails.labels
         }
-        filtered_files = request.filteredFiles
-        matcher = IssueMatcher()
-        result = await matcher.match_files(issue_data, filtered_files)
-
-        response = KeywordMatchResponse(filename_matches=result)
-        return response
+        
+        # Convert filtered files to list of dicts
+        filtered_files = [
+            {
+                "name": file.name,
+                "path": file.path,
+                "download_url": str(file.download_url)
+            } 
+            for file in request.filteredFiles
+        ]
+        result = await matcher.match_files(issue_data,filtered_files)
+        result = json.dumps(result, indent=4)
+        return KeywordMatchResponse(filename_matches=result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
