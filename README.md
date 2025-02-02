@@ -42,9 +42,6 @@ For Hardware:
 
 ### Implementation
 For Software:
-### Implementation  
-
-### Implementation  
 
 #### Backend (server)  
 ##### Installation  
