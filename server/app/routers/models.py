@@ -1,36 +1,39 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-from typing import List,Dict
+from app.schemas.model_schemas import IssueAnalysisRequest, IssueAnalysisResponse
+from typing import List, Optional
 from model.matcher import IssueMatcher
+import time
 import json
-from app.schemas.model_schemas import KeywordMatchRequest, KeywordMatchResponse
 
 router = APIRouter()
 
-@router.post("/analyze_issue", response_model=KeywordMatchResponse)
-async def analyze_issue(request: KeywordMatchRequest):
-    matcher = IssueMatcher()
+
+@router.post("/analyse-issue", response_model=IssueAnalysisResponse)
+async def analyze_issue(request: IssueAnalysisRequest):
     try:
-        # Extract issue data
-        issue_data = {
-            "owner": request.issueDetails.owner,
-            "repo": request.issueDetails.repo,
-            "title": request.issueDetails.title,
-            "description": request.issueDetails.description,
-            "labels": request.issueDetails.labels
-        }
+        # Initialize the matcher
+        matcher = IssueMatcher()
         
-        # Convert filtered files to list of dicts
-        filtered_files = [
-            {
-                "name": file.name,
-                "path": file.path,
-                "download_url": str(file.download_url)
-            } 
-            for file in request.filteredFiles
-        ]
-        result = await matcher.match_files(issue_data,filtered_files)
-        result = json.dumps(result, indent=4)
-        return KeywordMatchResponse(filename_matches=result)
+        start_time = time.time()
+        
+        # Run the matching
+        result = await matcher.match_files(
+            request.issueDetails.dict(),
+            [file.dict() for file in request.filteredFiles]
+        )
+        
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        
+        return IssueAnalysisResponse(
+            elapsed_time=elapsed_time,
+            matches=result,
+            status="success",
+            message="Issue analysis completed successfully"
+        )
+    
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error analyzing issue: {str(e)}"
+        )

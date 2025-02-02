@@ -1,10 +1,11 @@
 from pydantic import BaseModel, HttpUrl
 from typing import List
 
-class FilteredFile(BaseModel):
+
+class FileInfo(BaseModel):
     name: str
     path: str
-    download_url: HttpUrl
+    download_url: str
 
 class IssueDetails(BaseModel):
     owner: str
@@ -13,17 +14,14 @@ class IssueDetails(BaseModel):
     description: str
     labels: List[str]
 
-class KeywordMatchRequest(BaseModel):
+class IssueAnalysisRequest(BaseModel):
     owner: str
     repo: str
-    filteredFiles: List[FilteredFile]
+    filteredFiles: List[FileInfo]
     issueDetails: IssueDetails
 
-
-class FileMatch(BaseModel):
-    file_name: str
-    match_score: int
-    download_url: HttpUrl
-
-class KeywordMatchResponse(BaseModel):
-    filename_matches: List[FileMatch]
+class IssueAnalysisResponse(BaseModel):
+    elapsed_time: float
+    matches: dict
+    status: str
+    message: str
