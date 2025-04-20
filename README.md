@@ -9,9 +9,6 @@
 - Member 1: Mehrin Fathima Shamim - Government Model Engineering College, Thrikkakara
 - Member 2: Diya Jojo - Government Model Engineering College, Thrikkakara
 - Member 3: Aswathy S Ajith - Government Model Engineering College, Thrikkakara
-  
-### Hosted Project Link
-https://issue-wiz.vercel.app/
 
 ### Project Description
 IssueWiz is an AI-powered platform designed to lower the barrier to entry for open-source contributions by providing intelligent issue analysis, personalized recommendations, and contextual documentation. The system helps both newcomers and experienced developers navigate complex codebases and find suitable issues to work on.
