@@ -78,7 +78,7 @@ export default function Home() {
               className="font-josefinSans bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-3 md:px-8 md:py-4 rounded-xl 
               flex items-center space-x-2 
               hover:scale-105 transition-transform duration-300 
-              shadow-xl hover:shadow-cyan-500/50 
+              shadow-xl hover:shadow-red-500/50 
               group"
             >
               <span>EXPLORE</span>
