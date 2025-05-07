@@ -67,7 +67,7 @@ const Beginner = () => {
   const [skills, setSkills] = useState<Record<string, string[]>>({});
 
 
-   // Helper function to extract and organize skills
+  // Helper function to extract and organize skills
   const organizeSkills = (repositories: Repository[]) => {
     return repositories.reduce((skillMap: Record<string, string[]>, repo) => {
       if (repo.language) {
@@ -271,73 +271,77 @@ const Beginner = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0B1A2E] via-[#12254A] to-[#0D1E3A] p-8 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-8 relative overflow-hidden">
       {/* Decorative background grid */}
-      <div className="absolute inset-0 pointer-events-none opacity-10">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0B1A2E_1px,transparent_1px),linear-gradient(to_bottom,#0B1A2E_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+      <div className="absolute inset-0 pointer-events-none opacity-5">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f8fafc_1px,transparent_1px),linear-gradient(to_bottom,#f8fafc_1px,transparent_1px)] bg-[size:40px_40px]"></div>
       </div>
 
+      {/* Glowing orbs for visual depth */}
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-indigo-600/10 blur-3xl"></div>
+      <div className="absolute bottom-1/3 right-1/3 w-80 h-80 rounded-full bg-indigo-500/10 blur-3xl"></div>
+
       {/* Decorative floating icons */}
-      <div className="absolute top-20 right-20 opacity-20 max-md:hidden">
-        <GitBranch size={100} className="text-cyan-500" />
+      <div className="absolute top-20 right-20 opacity-10 max-md:hidden">
+        <GitBranch size={80} className="text-indigo-400" />
       </div>
-      <div className="absolute bottom-20 left-20 opacity-20 max-md:hidden">
-        <Code2 size={100} className="text-cyan-500" />
+      <div className="absolute bottom-20 left-20 opacity-10 max-md:hidden">
+        <Code2 size={80} className="text-indigo-400" />
       </div>
-      <div className="absolute top-1/3 left-20 opacity-20 max-md:hidden">
-        <FileText size={80} className="text-cyan-500" />
+      <div className="absolute top-1/3 left-20 opacity-10 max-md:hidden">
+        <FileText size={60} className="text-indigo-400" />
       </div>
-      <div className="absolute bottom-1/3 right-20 opacity-20 max-md:hidden">
-        <Workflow size={80} className="text-cyan-500" />
+      <div className="absolute bottom-1/3 right-20 opacity-10 max-md:hidden">
+        <Workflow size={60} className="text-indigo-400" />
       </div>
 
       <div className="max-w-4xl mx-auto relative z-10">
         {!showChatBot ? (
           // Initial input form
-          <div className="max-w-2xl mx-auto bg-[#162544]/50 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-cyan-500/20">
+          <div className="max-w-2xl mx-auto bg-slate-800/40 backdrop-blur-xl rounded-2xl shadow-xl p-8 border border-indigo-500/20">
             <div className="text-center space-y-6 mb-8">
               <div className="flex items-center justify-center space-x-4">
-                <Search className="text-cyan-400" size={40} />
+                <Search className="text-indigo-400" size={36} />
                 <h1 className="text-3xl font-bold text-white">REPOSITORY AND ISSUE MATCHER</h1>
               </div>
-              <p className="text-xl text-white/70">
+              <p className="text-xl text-slate-300">
                 Enter your details below to discover tailored open-source issues that match your skills and interests.
               </p>
             </div>
 
             <div className="space-y-6">
               <div className="space-y-2">
-                <label className="text-white/70 text-sm font-medium">GitHub Username</label>
+                <label className="text-slate-300 text-sm font-medium">GitHub Username</label>
                 <div className="relative">
-                  <Github className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cyan-500/50" size={20} />
+                  <Github className="absolute left-3 top-1/2 transform -translate-y-1/2 text-indigo-400/70" size={20} />
                   <input
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Enter your GitHub username"
-                    className="w-full pl-10 p-4 rounded-xl bg-[#1E2B43]/50 border border-cyan-500/20 text-white 
-                      focus:ring-2 focus:ring-cyan-500/40 focus:border-transparent"
+                    className="w-full pl-10 p-4 rounded-xl bg-slate-700/50 border border-indigo-500/20 text-white 
+                      focus:ring-2 focus:ring-indigo-500/40 focus:border-transparent"
                   />
                 </div>
               </div>
               
               <div className="space-y-2">
-                <label className="text-white/70 text-sm font-medium">Repository URL</label>
+                <label className="text-slate-300 text-sm font-medium">Repository URL</label>
                 <input
                   type="text"
                   value={repoUrl}
                   onChange={(e) => setRepoUrl(e.target.value)}
                   placeholder="Enter the repository link"
-                  className="w-full p-4 rounded-xl bg-[#1E2B43]/50 border border-cyan-500/20 text-white 
-                    focus:ring-2 focus:ring-cyan-500/40 focus:border-transparent"
+                  className="w-full p-4 rounded-xl bg-slate-700/50 border border-indigo-500/20 text-white 
+                    focus:ring-2 focus:ring-indigo-500/40 focus:border-transparent"
                 />
               </div>
               
               <button
                 onClick={handleFetch}
                 disabled={isLoading || !username || !repoUrl}
-                className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white py-4 rounded-xl
-                  hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-cyan-500/50
+                className="w-full bg-gradient-to-r from-indigo-500 to-indigo-700 text-white py-4 rounded-xl
+                  hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-indigo-500/50
                   disabled:opacity-50 disabled:hover:scale-100"
               >
                 {isLoading ? 'Finding Issues...' : 'Find Recommended Issues'}
@@ -345,7 +349,8 @@ const Beginner = () => {
             </div>
           </div>
         ) : (
-          // Chat interface
+          // Chat interface - this component is imported, we don't need to modify it here
+          // The styling for ChatBot would be updated in its own component file
           <ChatBot
             messages={chatMessages}
             userMessage={userMessage}
